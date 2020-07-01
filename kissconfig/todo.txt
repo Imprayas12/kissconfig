@@ -1,0 +1,2 @@
+
+ConfigLoad(file_pattern=["*.conf"], path_list=['.', '~/.hoge', '/etc'])
