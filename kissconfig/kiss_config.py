@@ -14,7 +14,10 @@ import collections
 import chardet
 from pprint import pprint, pformat
 
-import logging as log
+import logging
+log = logging.getLogger('kissconfig')
+log.setLevel(logging.DEBUG)
+
 
 # pip
 import yaml
@@ -122,7 +125,7 @@ class EnvValue(object):
 class ConfigFile(object):
     """ loading a indirect config file.
 
-    :ar[0]:    specify file_name to load 
+    :ar[0]:    would specify a file_name to load, (optional)  
 
     :keywords: 
     :name_pattern_list: use some match list instead of argv[0] name
@@ -163,7 +166,6 @@ class ConfigFile(object):
         #
         # keyとけpath_listだけ指定の場合.
         #
-        #import pdb; pdb.set_trace()
 
         # 初期化時解決 (動的解決と混在している)
         if self.key:
@@ -216,7 +218,6 @@ class ConfigFile(object):
                     self.name = self.key(kconfig)
                 elif self.key in kconfig:
                     # 普通に下請けの確定はよばれる、しかし key参照するために kconfig.get のなかで、db参照がある、dbを確定させないといけない ?? (そっか...)
-                    key_not_found = False
                     self.name = kconfig.get(self.key, limit_layer=idx)
                     log.debug("ConfigFile key: {}={}".format(self.key, self.name))
                     if self.name == None:
@@ -227,8 +228,9 @@ class ConfigFile(object):
                         else:
                             raise RuntimeError(
                                 "file specified key {} is not found".format(self.key))
-                else:
-                    key_not_found = True
+                    #key_not_found = False
+                #else:
+                #    key_not_found = True
                 if self.required == True:
                     RuntimeError("with the specified key \'{}\', the value is not found. {}".format(
                         self.key, kconfig))
@@ -240,6 +242,7 @@ class ConfigFile(object):
                 founds = file_search(name_pattern_list=[self.name], path_list=self.path_list)
                 if len(founds):
                     self.name = founds[0]
+                    key_not_found = False
                 else:
                     if not self.required:
                         log.debug("not required file is missing and skipped: name {}, path_list: {}".format(self.name, self.path_list))
@@ -247,13 +250,17 @@ class ConfigFile(object):
             if self.required:
                 if self.name is None:
                     if key_not_found is True:
+                        v = "NoValue"
+                        if self.key in kconfig:
+                            v = kconfig.get(self.key)
                         raise RuntimeError(
-                            "not found the value associated by the key `{}` specified".format(self.key))
+                            "not found the value associated by the value `{}` with the key `{}` specified".format(v, self.key))
+                    import pdb; pdb.set_trace()
                     raise RuntimeError("a name parameter not specified")
             else:
                 # not self.required:
                 if self.name is None:
-                    if key_not_found==True:
+                    if key_not_found == True:
                         return None
                     else:
                         log.debug("BAD?")

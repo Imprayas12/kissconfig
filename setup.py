@@ -45,7 +45,8 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=[
-        'pyyaml'
+        'pyyaml',
+        'chardet',
     ],
     extras_require={
         'dev': [

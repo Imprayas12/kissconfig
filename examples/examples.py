@@ -19,6 +19,9 @@ if __name__ == '__main__0':
     print("values are {} ".format([(k, values[k]) for k in values]))
 
 if __name__ == '__main__0':
+    '''
+    デフォルトは production だけど、 コマンドラインで prod / stage / dev の切り替えを指定し、得られた文字列変数をファイル名に使う
+    '''
     import kissconfig as cfg
     config = cfg.KissConfig()
     parser = cfg.ArgumentParser()
