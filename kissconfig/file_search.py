@@ -52,11 +52,16 @@ def file_search(name_pattern_list=['*.conf'], path_list=['.']):
     org_alt_li = _macro_extract(path_list)
     ar = []
     for path_org_alt in org_alt_li:
+        path_org_alt = list(path_org_alt[:]) #shallow copy
         if path_name_must_end_with_a_separator:
             if not (path_org_alt[-1] == os.sep or path_org_alt[-1] != '.'):
                 raise RuntimeError("add separator at end of the path name {}".format(path_org_alt))
         for name_pattern in name_pattern_list:
-            pn = os.path.join(_separator_norm(path_org_alt[1]), name_pattern)
+            path_n, file_n = os.path.split(name_pattern)
+            if path_n != '':
+                pn = name_pattern
+            else:
+                pn = os.path.join(_separator_norm(path_org_alt[1]), name_pattern)
             if _like_glob(pn):
                 epn = _glob_ext(pn)
                 if isinstance(epn, list) and len(epn) and os.path.exists(epn[0]):
