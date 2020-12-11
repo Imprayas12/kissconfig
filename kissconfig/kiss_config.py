@@ -195,7 +195,7 @@ class ConfigFile(object):
                     raise FileNotFoundError(
                             "specified indirect file {} is not found".format(name))
                 else:
-                    log.info("a file {} has searched {}.".format(name))
+                    log.info("a file {} has searched {}.".format(name, kw))
             else:
                 if len(founds):
                     self.name = founds[0]
