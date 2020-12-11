@@ -158,7 +158,7 @@ class ConfigFile(object):
         self.path_list = kw.get('path_list')
 
         if self.key and self.name != None:
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
             return
         if not self.name_pattern_list is None and len(ar):
             raise RuntimeError("ConfigFile filename and search name are duplicated")
@@ -255,7 +255,6 @@ class ConfigFile(object):
                             v = kconfig.get(self.key)
                         raise RuntimeError(
                             "not found the value associated by the value `{}` with the key `{}` specified".format(v, self.key))
-                    import pdb; pdb.set_trace()
                     raise RuntimeError("a name parameter not specified")
             else:
                 # not self.required:
