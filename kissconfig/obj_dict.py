@@ -1,7 +1,7 @@
 #coding:utf-8
 import collections
 
-class objdict(collections.MutableMapping):
+class objdict(collections.abc.MutableMapping):
     """A dictionary can be accessed by attr.
 
     >> xx = objdict()

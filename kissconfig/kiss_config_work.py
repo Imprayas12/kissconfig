@@ -297,7 +297,7 @@ class Extract():
                 if val != y:
                     x['value'] = y
 
-class objdict(collections.MutableMapping):
+class objdict(collections.abc.MutableMapping):
     """A dictionary can be accessed by attr.
 
     >> xx = objdict()
